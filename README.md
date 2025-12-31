@@ -1,22 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pastebin Lite
 
-## Getting Started
+A small Pastebin-like application built with Next.js and Prisma/Postgres. Users can create text pastes with optional time-based expiry (TTL) and view-count limits, and share them via URLs.
 
-First, run the development server:
+## How to run the app locally
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository.
+2. Install dependencies: `npm install`
+3. Set up your database: Ensure you have a PostgreSQL database and set the `DATABASE_URL` environment variable.
+4. Run Prisma migrations: `npx prisma migrate dev`
+5. Generate Prisma client: `npx prisma generate`
+6. Start the development server: `npm run dev`
+7. Open [http://localhost:3000](http://localhost:3000) to use the app.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Persistence Layer
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This app uses Prisma ORM with PostgreSQL as the persistence layer. Prisma provides type-safe database access and migrations, ensuring data survives across requests in serverless environments like Vercel.
+
+## Important Design Decisions
+
+- Used Next.js App Router for API routes and pages.
+- Implemented atomic view count increments to handle concurrent requests.
+- Supported deterministic time testing via `TEST_MODE` and `x-test-now-ms` header.
+- Rendered paste content safely using `<pre>` tags to prevent script execution.
+- Validated inputs using Zod for type safety and error handling.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
